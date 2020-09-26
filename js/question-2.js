@@ -21,29 +21,39 @@ const apiUrl =
 const resultsContainer = document.querySelector(".results");
 
 async function getGames() {
-	const response = await fetch(apiUrl);
-	const results = await response.json();
-	const games = results.results;
-	let gameListHTML = "";
-	for (i = 0; i < games.length; i++) {
-		let gameNameHTML = `<div class="game">Unknown game</div>`;
-		let gameRatingHTML = `<div class="rating">Unknown rating</div>`;
-		let gameTagsHTML = `<div class="tag">Unknown number of tags</div>`;
-		if (i === 8) {
-			break;
+	resultsContainer.innerHTML = `<div class="loader"></div>`;
+
+	try {
+		const response = await fetch(apiUrl);
+		const results = await response.json();
+		const games = results.results;
+		let gameListHTML = "";
+		for (i = 0; i < games.length; i++) {
+			let gameNameHTML = `<div class="game">Unknown game</div>`;
+			let gameRatingHTML = `<div class="rating">Unknown rating</div>`;
+			let gameTagsHTML = `<div class="tag">Unknown number of tags</div>`;
+			if (i === 8) {
+				break;
+			}
+			if (games[i].name) {
+				gameNameHTML = `<div class="game">${games[i].name}</div>`;
+			}
+			if (games[i].rating) {
+				gameRatingHTML = `<div class="rating">Rating: ${games[i].rating}</div>`;
+			}
+			if (games[i].tags.length) {
+				gameTagsHTML = `<div class="tag">Nr. of tags: ${games[i].tags.length}</div>`;
+			}
+			gameListHTML += `<div class="gameContainer"> ${gameNameHTML} ${gameRatingHTML} ${gameTagsHTML} </div>`;
 		}
-		if (games[i].name) {
-			gameNameHTML = `<div class="game">Name: ${games[i].name}</div>`;
-		}
-		if (games[i].rating) {
-			gameRatingHTML = `<div class="rating">Rating: ${games[i].rating}</div>`;
-		}
-		if (games[i].tags.length) {
-			gameTagsHTML = `<div class="tag">Nr. of tags: ${games[i].tags.length}</div>`;
-		}
-		gameListHTML += `<div class="gameContainer"> ${gameNameHTML} ${gameRatingHTML} ${gameTagsHTML} </div>`;
+		//Timeout added to make the loader display for some seconds
+		setTimeout(() => {
+			resultsContainer.className = "resultsDisplay";
+			resultsContainer.innerHTML = gameListHTML;
+		}, 3000);
+	} catch (error) {
+		resultsContainer.innerHTML = `<div class="error"><div>An error has occured!</div><div>${error}</div> </div>`;
 	}
-	resultsContainer.innerHTML = gameListHTML;
 }
 
 getGames();
