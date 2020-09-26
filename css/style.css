@@ -1,0 +1,26 @@
+.results {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 800px;
+	background-color: lightgray;
+	border-radius: 1rem;
+}
+
+.gameContainer {
+	flex: auto;
+	border-radius: 1rem;
+	margin: 1rem;
+	padding: 1rem;
+	width: 300px;
+	text-align: center;
+}
+
+h1 {
+	max-width: 800px;
+	text-align: center;
+}
+.game {
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-decoration: underline;
+}
